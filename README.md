@@ -1,4 +1,4 @@
-#Laboratori Tecnologie per IOT
+# Laboratori Tecnologie per IOT
 
 In questo repository si trovano tutti i laboratori svolti per il corso a scelta Tecnologie per IOT
 
