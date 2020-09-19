@@ -1,6 +1,6 @@
 # Laboratori Tecnologie per IOT
 
-In questo repository si trovano tutti i laboratori svolti per il corso a scelta Tecnologie per IOT
+In questo repository si trovano i laboratori svolti per il corso a scelta Tecnologie per IOT
 
 - Gruppo n° 22
 - Membri:
