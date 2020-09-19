@@ -1,0 +1,18 @@
+{
+    "broker": {
+        "address": "test.mosquitto.org",
+        "port": 1883
+    },
+    "devices": {},
+    "services": {
+        "0": {
+            "description": "Smart home controller",
+            "end-points": {
+                "rest": [],
+                "mqtt-topics": []
+            },
+            "insert-timestamp": 1591895140.931411
+        }
+    },
+    "users": {}
+}
