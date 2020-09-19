@@ -8,7 +8,6 @@
 #define TEMP_PIN A1
 
 const String url = "http://0.0.0.0:8080/devices";
-const String ip = "192.168.0.8";
 String my_base_topic = "/tiot/22";
 float temp;
 
@@ -77,18 +76,6 @@ String senMlEncode (String title, float value, String unit) {
 
   return output;
 }
-
-String senMlEncodeRegisterCatalog() {
-
-  doc_rec.clear();
-  doc_rec["end-points"]["mqtt-topics"]["temp"] = my_base_topic + "/temperature";
-  doc_rec["resources"] = "temperature";
-
-  String output;
-  serializeJson(doc_rec, output);
-  return output;
-}
-
 int postRequest(String data) {
   Process p;
   p.begin("curl");
@@ -100,9 +87,24 @@ int postRequest(String data) {
   p.addParameter(data);
   p.addParameter(url);
   p.run();
-
   return p.exitValue(); // Status curl command
 }
+
+String senMlEncodeRegisterCatalog() {
+
+  doc_rec.clear();
+  doc_rec["end-points"]["mqtt-topics"]["temp"] = my_base_topic + "/temperature";
+  doc_rec["end-points"]["mqtt-topics"]["led"] = my_base_topic + "/led";
+
+  JsonArray res = doc_rec.createNestedArray("resources");
+  res.add("temperature");
+  res.add("led");
+
+  String output;
+  serializeJson(doc_rec, output);
+  return output;
+}
+
 
 void setup() {
 
@@ -118,22 +120,25 @@ void setup() {
 
   mqtt.begin(MQTT_HOST, 1883);
   mqtt.subscribe(my_base_topic + F("/led"), setLED);
+
 }
 
 void loop() {
 
   mqtt.monitor();
-  int retval = postRequest(senMlEncodeRegisterCatalog());
-   if(retval != 0){
-    Serial.print("Something went wrong, curl return value was ");
-    Serial.println(retval);
-  }
+
   //Leggo la temperatura
   temp = readTemp();
 
   //Continuo ad inviare i valori di temperatura misurati
-  String message = senMlEncodeRegisterCatalog();
+  String message = senMlEncode(F("temperaure"), temp, F("Cel"));
   mqtt.publish(my_base_topic + F("/temperature"), message);
+
+  int retval = postRequest(senMlEncodeRegisterCatalog());
+  if(retval != 0){
+    Serial.print("Something went wrong, curl return value was ");
+    Serial.println(retval);
+  }
   
   delay(5000);
 
