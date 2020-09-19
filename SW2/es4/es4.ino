@@ -80,7 +80,7 @@ String senMlJson(float value){
 String senMlRegister(){
   jsonOut.clear();
   
-  jsonOut["end-points"] = "http";
+  jsonOut["end-points"]["REST"] = "http";
   jsonOut["resources"] = "temperature";
  
   
